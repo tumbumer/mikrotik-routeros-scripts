@@ -1,0 +1,36 @@
+#
+# Backup script for RouterOS 5.25 and above
+# Version: 1.0.0
+# License: Apache 2
+# Source code: https://github.com/tumbumer/mikrotik-routeros-scripts
+# Copyright (C) 2013-2016 Denis Dvoretskov aka tumbumer
+#
+
+# Policy: test, read, policy
+
+:log info "*** Start backup script ***";
+
+# Init
+:local tdate [/system clock get date];
+:local ttime [/system clock get time];
+:local sysname [/system identity get name];
+
+# Get mounth as digital
+:local amon [:toarray "jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec"];
+:local nmon ([:find $amon [:pick $tdate 0 3]] + 1);
+
+:if ([:len $nmon] = 1) do={
+  :set nmon ("0" . $nmon);
+};
+
+# Get date as "yyyymmddhhnnss"
+:set ttime ([:pick $ttime 0 2] . [:pick $ttime 3 5]);
+:local sdate ([:pick $tdate 7 11] . $nmon . [:pick $tdate 4 6] . [$ttime]);
+
+# Make binary backup
+/system backup save name=($sysname . "_" . $sdate);
+
+# Make text backup
+/export compact file=($sysname . "_" . $sdate);
+
+:log info "*** End backup script ***";
