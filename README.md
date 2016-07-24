@@ -8,9 +8,9 @@ Several [MikroTik](http://www.mikrotik.com) [RouterOS](http://wiki.mikrotik.com/
 The script makes a backup of the [system and configuration files](http://wiki.mikrotik.com/wiki/Manual:Configuration_Management)
 
     sysname_yyyymmddhhnnss.backup
-    sysname_yyyymmddhhnnss.rsc`
+    sysname_yyyymmddhhnnss.rsc
 
-where "sysname" is a system name (`/system identity get name`)
+where "sysname" is the system name (`/system identity get name`)
 
 Usage:
 
